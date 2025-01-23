@@ -1,0 +1,246 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Image Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #444;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        #loading {
+            display: none;
+            font-size: 16px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deepfake Image Detection</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" required />
+            <br />
+            <button type="submit">Check Image</button>
+        </form>
+        <p id="loading">Processing the image... Please wait.</p>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            // Clear previous results
+            const resultText = document.getElementById('result');
+            const loadingText = document.getElementById('loading');
+            resultText.innerText = "";
+            loadingText.style.display = "block"; // Show loading message
+
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                // Display the prediction result
+                resultText.innerText = `This image is: ${data.prediction.toUpperCase()}`;
+            } catch (error) {
+                resultText.innerText = "Error: Unable to process the image.";
+            } finally {
+                loadingText.style.display = "none"; // Hide loading message
+            }
+        };
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Image Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #444;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        #loading {
+            display: none;
+            font-size: 16px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deepfake Image Detection</h1>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" accept="image/*" required />
+            <br />
+            <button type="submit">Check Image</button>
+        </form>
+        <p id="loading">Processing the image... Please wait.</p>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        // Simulated classifier function
+        function classifyImage(imageData) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simulate model output (50% chance of real or fake)
+                    const isFake = Math.random() > 0.5;
+                    resolve(isFake ? "fake" : "real");
+                }, 2000); // Simulating model inference delay
+            });
+        }
+
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            // Clear previous results
+            const resultText = document.getElementById('result');
+            const loadingText = document.getElementById('loading');
+            resultText.innerText = "";
+            loadingText.style.display = "block"; // Show loading message
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = async () => {
+                    const imageData = reader.result; // Base64 encoded string
+
+                    try {
+                        // Call the classifier function
+                        const result = await classifyImage(imageData);
+
+                        // Display the prediction
+                        resultText.innerText = `This image is: ${result.toUpperCase()}`;
+                    } catch (error) {
+                        resultText.innerText = "Error: Unable to classify the image.";
+                    } finally {
+                        loadingText.style.display = "none"; // Hide loading message
+                    }
+                };
+
+                reader.onerror = () => {
+                    loadingText.style.display = "none"; // Hide loading message
+                    resultText.innerText = "Error: Unable to read the file.";
+                };
+
+                reader.readAsDataURL(file); // Reads the file as a base64 data URL
+            } else {
+                loadingText.style.display = "none"; // Hide loading message
+                resultText.innerText = "No file selected.";
+            }
+        };
+    </script>
+</body>
+</html>
